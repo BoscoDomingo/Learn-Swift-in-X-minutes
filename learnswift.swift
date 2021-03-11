@@ -5,10 +5,8 @@ import UIKit //includes Foundation
 
 // Single-line comments are prefixed with //
 // Multi-line comments start with /* and end with */
-/* Nested multiline comments
- /* ARE */
- allowed
- */
+/* Nested multiline comments /* ARE */
+allowed */
 
 // Xcode supports landmarks to annotate your code and lists them in the jump bar
 // MARK: Section mark
@@ -81,11 +79,11 @@ let multiLineString = """
     You can include " or "" in multi-line strings because the delimiter is three "s.
     """
 
-// Arrays
-//  Arrays can contain values of different types, or be forced to contain 
+// MARK: Collections
+//  Arrays can contain values of different types, or be forced to contain
 //  only 1 type:
-var arrayOfInts:[Int] = [1,2,"a"] //Error
-var arrayOfAnything:[Any] = [1,2,"a"]
+var arrayOfInts: [Int] = [1, 2, "a"] //Error
+var arrayOfAnything: [Any] = [1, 2, "a"]
 
 let shoppingList = ["catfish", "water", "tulips",] //commas are allowed after the last element
 let secondElement = shoppingList[1] // Arrays are 0-indexed
@@ -293,7 +291,7 @@ for element in shoppingList {
 }
 
 //  Some alternatives
-for index in 0..<someArray.count{
+for index in 0..<someArray.count {
     print(i)
 }
 
@@ -322,16 +320,16 @@ repeat {
 
 // The `continue` statement continues executing a loop at the next iteration
 // The `break` statement ends a swift or loop immediately
-i=0
-while i < [1,2,3,4].count{
-    if i==1{
+i = 0
+while i < [1, 2, 3, 4].count {
+    if i == 1 {
         continue
     }
-    if i==3{
+    if i == 3 {
         break
     }
     print(i) // 2
-    i+=1
+    i += 1
 }
 
 // MARK: Ranges
@@ -549,32 +547,32 @@ enum Rank: CaseIterable {
     case jack, queen, king
     var icon: String {
         switch self {
-            case .ace:
-                return "A"
-            case .two:
-                return "2"
-            case .three:
-                return "3"
-            case .four:
-                return "4"
-            case .five:
-                return "5"
-            case .six:
-                return "6"
-            case .seven:
-                return "7"
-            case .eight:
-                return "8"
-            case .nine:
-                return "9"
-            case .ten:
-                return "10"
-            case .jack:
-                return "J"
-            case .queen:
-                return "Q"
-            case .king:
-                return "K"
+        case .ace:
+            return "A"
+        case .two:
+            return "2"
+        case .three:
+            return "3"
+        case .four:
+            return "4"
+        case .five:
+            return "5"
+        case .six:
+            return "6"
+        case .seven:
+            return "7"
+        case .eight:
+            return "8"
+        case .nine:
+            return "9"
+        case .ten:
+            return "10"
+        case .jack:
+            return "J"
+        case .queen:
+            return "Q"
+        case .king:
+            return "K"
         }
     }
 }
@@ -612,11 +610,11 @@ enum Furniture {
 }
 
 var desk: Furniture = .desk(height: 80)
-print(desk.description())     // "Desk with 80 cm"
+print(desk.description()) // "Desk with 80 cm"
 var chair = Furniture.chair("Foo", 40)
-print(chair.description())    // "Chair of Foo with 40 cm"
+print(chair.description()) // "Chair of Foo with 40 cm"
 
-if chair.chair(let name, let height) where height >= 5{
+if chair.chair(let name, let height) where height >= 5 {
     print(name)
 }
 
@@ -733,7 +731,7 @@ class Rect: Shape {
         return sideLength * sideLength
     }
     //Deinitialiser/Destructor
-    deinit(){
+    deinit() {
         super.deinit()
     }
 }
@@ -754,7 +752,7 @@ print(mySquare.sideLength) // 4
 let aShape = mySquare as Shape //Upcasting
 
 // Downcast instance:
-// Because downcasting can fail, the result can be an optional (as?) or an implicitly unwrpped optional (as!).  
+// Because downcasting can fail, the result can be an optional (as?) or an implicitly unwrpped optional (as!).
 let anOptionalSquare = aShape as? Square // This will return `nil` if aShape is not a Square
 let aSquare = aShape as! Square // This will throw a runtime error if aShape is not a Square
 
@@ -783,10 +781,10 @@ class Circle: Shape {
 }
 
 var myCircle = Circle(radius: 1)
-print(myCircle?.getArea())    // Optional(3)
-print(myCircle!.getArea())    // 3
+print(myCircle?.getArea()) // Optional(3)
+print(myCircle!.getArea()) // 3
 var myEmptyCircle = Circle(radius: -1)
-print(myEmptyCircle?.getArea())    // "nil"
+print(myEmptyCircle?.getArea()) // "nil"
 if let circle = myEmptyCircle {
     // will not execute since myEmptyCircle is nil
     print("circle is not nil")
@@ -810,9 +808,9 @@ class Person {
 }
 
 class Student: Person {
-    var aNumber:Int
+    var aNumber: Int
 
-    init(number:Int){
+    init(number: Int) {
         self.aNumber = number
         super.init()
     }
@@ -936,7 +934,7 @@ testTryStuffDefer()
 // Generics: Similar to Java and C#. Use the `where` keyword to specify the
 //   requirements of the generics.
 
-func something<T:Sequence, U:Sequence>(_:T, _:U) -> U where T.Element:Equatable, U.Element:Equatable, T.Element == U.Element{
+func something<T:Sequence, U:Sequence>(_: T, _: U) -> U where T.Element: Equatable, U.Element: Equatable, T.Element == U.Element {
     //
 }
 
@@ -951,7 +949,7 @@ func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
 findIndex(array: [1, 2, 3, 4], valueToFind: 3) // Optional(2)
 
 
-func findSomething<T> (array: [T], valueToFind: T) -> Int? where T:Equatable {
+func findSomething<T> (array: [T], valueToFind: T) -> Int? where T: Equatable {
     //This would be equal to the <T:Equatable> above
 }
 
@@ -970,7 +968,7 @@ extension Array where Array.Element == Int {
 
 // MARK: `is` vs `as` vs `as?` vs `as!`
 // `is` is a type-check operator
-if item is CertainType{
+if item is CertainType {
     print("...")
 }
 // `as?` attempts a downcast (makes the object an instance of a more specialised or child class).
@@ -1052,9 +1050,9 @@ final class ViewManager {
 
 // Conditional Compilation
 #if false
-print("This code will not be compiled")
+    print("This code will not be compiled")
 #else
-print("This code will be compiled")
+    print("This code will be compiled")
 #endif
 /*
  Options are:
@@ -1066,7 +1064,7 @@ print("This code will be compiled")
  targetEnvironment()    simulator
  */
 #if swift(<3)
-println()
+    println()
 #endif
 
 // Compile-Time Diagnostics
