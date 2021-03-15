@@ -1,7 +1,7 @@
 
 // import a module
 import Foundation
-import UIKit //includes Foundation
+//import UIKit //includes Foundation
 
 // Single-line comments are prefixed with //
 // Multi-line comments start with /* and end with */
@@ -362,8 +362,8 @@ for i in 0..<5 {
 //    }
 
 //To step by more than one, use the stride(from:to:by:) or stride(from:through:by) functions
-for i in stride(from: 0, to: 10, by: 2) // same as `for (int i = 0; i < 10; i += 2)`
-for i in stride(from: 0, through: 10, by: 2) // same as `for (int i = 0; i <= 10; i += 2)
+for i in stride(from: 0, to: 10, by: 2){} // same as `for (int i = 0; i < 10; i += 2)`
+for i in stride(from: 0, through: 10, by: 2){} // same as `for (int i = 0; i <= 10; i += 2)
 
 
 // MARK: - Functions
@@ -614,7 +614,7 @@ print(desk.description()) // "Desk with 80 cm"
 var chair = Furniture.chair("Foo", 40)
 print(chair.description()) // "Chair of Foo with 40 cm"
 
-if chair.chair(let name, let height) where height >= 5 {
+if chair(let name, let height) where height >= 5 {
     print(name)
 }
 
@@ -731,7 +731,7 @@ class Rect: Shape {
         return sideLength * sideLength
     }
     //Deinitialiser/Destructor
-    deinit() {
+    deinit {
         super.deinit()
     }
 }
@@ -934,8 +934,8 @@ testTryStuffDefer()
 // Generics: Similar to Java and C#. Use the `where` keyword to specify the
 //   requirements of the generics.
 
-func something<T:Sequence, U:Sequence>(_: T, _: U) -> U where T.Element: Equatable, U.Element: Equatable, T.Element == U.Element {
-    //
+func something<T:Sequence, U:Sequence>(_: T, _: U) -> U where T.Element: Equatable, T.Element == U.Element {
+    //The `where` clause implies U.Element will also be Equatable
 }
 
 func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
@@ -1166,7 +1166,7 @@ fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
 
 //Result has a get() method that either returns the successful value if it exists, or throws its error otherwise.
 //This allows you to convert Result into a regular throwing call, like this:
-fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
+fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
     if let count = try? result.get() {
         print("\(count) unread messages.")
     }
