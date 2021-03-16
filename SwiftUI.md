@@ -25,8 +25,7 @@ Text("Some text").padding().background(Color.blue) //The padding is coloured
 ## States and bindings
 
 You should **only have 1 source of truth** for each piece of information (either 1 `@State` or `BindableObject` per property), meaning all other Views that want to use that source of truth should make use of `@Binding`s (Bindings are read-write). `@State` is not a great fit for external data (such as things coming from backend), since it is "stuck" inside SwiftUI. Use the `BindableObject` protocol for these types of data:
-![Single Source of Truth](https://user-images.githubusercontent.com/46006784/111323064-d5b48e00-8669-11eb-89cf-5ed564fc46ab.png)
-
+<img width="700" alt="Single Source of Truth" src="https://user-images.githubusercontent.com/46006784/111323064-d5b48e00-8669-11eb-89cf-5ed564fc46ab.png">
 
 ![@State and BindableObject](https://user-images.githubusercontent.com/46006784/111322732-840c0380-8669-11eb-8f0d-281f5f746af3.png)
 
@@ -42,6 +41,7 @@ Generally speaking, you want to avoid the use of `@State` and favour other alter
 An alternative for hierarchies is `@EnvironmentObject` which avoids having to pass the `BindableObject` property from View to View, and instead grab it straight from `Environment`, always with 1 source of truth and thus no concurrency problems.
 ![@EnvironmentObject](https://i.imgur.com/kgut0rm.png)
 ![Screenshot 2021-03-16 at 15 00 21](https://user-images.githubusercontent.com/46006784/111322877-ab62d080-8669-11eb-9219-a3da230e8668.png)
+<img width="900" src="https://user-images.githubusercontent.com/46006784/111327975-2332fa00-866e-11eb-9e20-8e92346c82d5.png">
 
 ## Hosting SwiftUI inside UIKit
 - `UIHostingController` - For iOS apps
@@ -59,10 +59,10 @@ The `Representable` protocol exists for this purpose.
 - `NSViewRepresentable` - For MacOS apps
 - `WKInterfaceObjectRepresentable` - For watchOS apps
 
-![](https://user-images.githubusercontent.com/46006784/111323872-8ae74600-866a-11eb-84e3-c32f9a2e5822.png)
+<img width="900" src="https://user-images.githubusercontent.com/46006784/111323872-8ae74600-866a-11eb-84e3-c32f9a2e5822.png">
 
 ### View Lifecycle inside SwiftUI
-<img width="1068" alt="Screenshot 2021-03-16 at 15 34 40" src="https://user-images.githubusercontent.com/46006784/111326815-27aae300-866d-11eb-922f-225299630d84.png">
+<img width="900" src="https://user-images.githubusercontent.com/46006784/111326815-27aae300-866d-11eb-922f-225299630d84.png">
 
 ## Know more/Code snippets
 
