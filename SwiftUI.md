@@ -24,8 +24,12 @@ Text("Some text").padding().background(Color.blue) //The padding is coloured
 
 ## States and bindings
 
-You should **only have 1 source of truth** for each piece of information (or 1 `@State` per property), meaning all other Views that want to use that source of truth should make use of `@Binding`s (Bindings are read-write). `@State` is not a great fit for external data (such as things coming from backend), since it is "stuck" inside SwiftUI. Use the `BindableObject` protocol for these types of data:
-![@State and BindableObject](https://i.imgur.com/g9hOeC9.png)
+You should **only have 1 source of truth** for each piece of information (either 1 `@State` or `BindableObject` per property), meaning all other Views that want to use that source of truth should make use of `@Binding`s (Bindings are read-write). `@State` is not a great fit for external data (such as things coming from backend), since it is "stuck" inside SwiftUI. Use the `BindableObject` protocol for these types of data:
+![Single Source of Truth](https://user-images.githubusercontent.com/46006784/111323064-d5b48e00-8669-11eb-89cf-5ed564fc46ab.png)
+
+
+![@State and BindableObject](https://user-images.githubusercontent.com/46006784/111322732-840c0380-8669-11eb-8f0d-281f5f746af3.png)
+
 ![@Binding](https://i.imgur.com/0LPvONN.png)
 
 Generally speaking, you want to avoid the use of `@State` and favour other alternatives when possible
@@ -37,18 +41,26 @@ Generally speaking, you want to avoid the use of `@State` and favour other alter
 ![@ObjectBinding](https://i.imgur.com/K80oZAb.png)
 An alternative for hierarchies is `@EnvironmentObject` which avoids having to pass the `BindableObject` property from View to View, and instead grab it straight from `Environment`, always with 1 source of truth and thus no concurrency problems.
 ![@EnvironmentObject](https://i.imgur.com/kgut0rm.png)
+![Screenshot 2021-03-16 at 15 00 21](https://user-images.githubusercontent.com/46006784/111322877-ab62d080-8669-11eb-9219-a3da230e8668.png)
 
 ## Hosting SwiftUI inside UIKit
 - `UIHostingController` - For iOS apps
 - `NSHostingController` - For MacOS apps
 - `WKHostingController` - For watchOS apps
-They are all subclases of `UIViewController` and thus will work seamlessly with existing UIKit views
+They are all subclases of `UIViewController` and thus will work seamlessly with existing UIKit views.
+
+`let hostingController = UIHostingController(rootView: SomeSwiftUIView)`
+
+![Screenshot 2021-03-16 at 15 12 23](https://user-images.githubusercontent.com/46006784/111323487-36dc6180-866a-11eb-8c9b-0304c3348068.png)
 
 ## Hosting UIKit inside SwiftUI
 The `Representable` protocol exists for this purpose.
 - `UIViewRepresentable` - For iOS apps
 - `NSViewRepresentable` - For MacOS apps
 - `WKInterfaceObjectRepresentable` - For watchOS apps
+
+![Screenshot 2021-03-16 at 15 14 25](https://user-images.githubusercontent.com/46006784/111323598-51163f80-866a-11eb-9911-dd5a6b82d071.png)
+
 ## Know more/Code snippets
 
 * [A great resource for some example code with image previews](https://github.com/fzhlee/SwiftUI-Guide/blob/master/README_English.md)
