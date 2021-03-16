@@ -59,7 +59,10 @@ The `Representable` protocol exists for this purpose.
 - `NSViewRepresentable` - For MacOS apps
 - `WKInterfaceObjectRepresentable` - For watchOS apps
 
-![Screenshot 2021-03-16 at 15 14 25](https://user-images.githubusercontent.com/46006784/111323598-51163f80-866a-11eb-9911-dd5a6b82d071.png)
+![](https://user-images.githubusercontent.com/46006784/111323872-8ae74600-866a-11eb-84e3-c32f9a2e5822.png)
+
+### View Lifecycle inside SwiftUI
+<img width="1068" alt="Screenshot 2021-03-16 at 15 34 40" src="https://user-images.githubusercontent.com/46006784/111326815-27aae300-866d-11eb-922f-225299630d84.png">
 
 ## Know more/Code snippets
 
