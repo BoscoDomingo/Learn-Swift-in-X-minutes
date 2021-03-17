@@ -4,7 +4,7 @@ Views are now value types, coming from `struct`, and are a function/result of th
 
 SwiftUI views must have a `ContentView` which in itself has a `body`, which is what is rendered, and *modifiers* for the different elements in that body. Ultimately, small atomic blocks make up greater architectures.
 
-```
+```Swift
 struct ContentView: View {
     var body: some View {
         Text("Hello World")
@@ -13,9 +13,21 @@ struct ContentView: View {
 ```
 
 The order of modifiers affects the final result, so be careful. For example:
-```
+
+```Swift
 Text("Some text").background(Color.blue).padding() //The padding is NOT coloured
 Text("Some text").padding().background(Color.blue) //The padding is coloured
+```
+
+And it is important to not that a modifier will be applied to an entire View if applicable. If not, it will trickle down into its inside Views. For example:
+
+```Swift
+var body: some View{
+    ZStack{
+        ...
+    }.padding() //applies to whole ZStack
+    .foregroundColor(.black) //applies to views inside ZStack
+}
 ```
 
 ## Cycle of interactions
@@ -44,17 +56,23 @@ An alternative for hierarchies is `@EnvironmentObject` which avoids having to pa
 <img width="900" src="https://user-images.githubusercontent.com/46006784/111327975-2332fa00-866e-11eb-9e20-8e92346c82d5.png">
 
 ## Hosting SwiftUI inside UIKit
+
 - `UIHostingController` - For iOS apps
 - `NSHostingController` - For MacOS apps
 - `WKHostingController` - For watchOS apps
+
 They are all subclases of `UIViewController` and thus will work seamlessly with existing UIKit views.
 
-`let hostingController = UIHostingController(rootView: SomeSwiftUIView)`
+```Swift
+let hostingController = UIHostingController(rootView: SomeSwiftUIView)
+```
 
 ![Screenshot 2021-03-16 at 15 12 23](https://user-images.githubusercontent.com/46006784/111323487-36dc6180-866a-11eb-8c9b-0304c3348068.png)
 
 ## Hosting UIKit inside SwiftUI
+
 The `Representable` protocol exists for this purpose.
+
 - `UIViewRepresentable` - For iOS apps
 - `NSViewRepresentable` - For MacOS apps
 - `WKInterfaceObjectRepresentable` - For watchOS apps
@@ -62,6 +80,7 @@ The `Representable` protocol exists for this purpose.
 <img width="900" src="https://user-images.githubusercontent.com/46006784/111323872-8ae74600-866a-11eb-84e3-c32f9a2e5822.png">
 
 ### View Lifecycle inside SwiftUI
+
 <img width="900" src="https://user-images.githubusercontent.com/46006784/111326815-27aae300-866d-11eb-922f-225299630d84.png">
 
 ## Know more/Code snippets
