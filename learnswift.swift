@@ -155,6 +155,8 @@ let `class` = "keyword"
  Because Swift requires every property to have a type, even nil must be
  explicitly stored as an Optional value.
 
+ To access an Optional's value, it must be "unwrapped".
+
  Optional<T> is an enum, with the cases .none (nil) and .some(T) (the value)
  */
 
@@ -164,21 +166,7 @@ let someOptionalString2: Optional<String> = nil
 let someOptionalString3 = String?.some("optional") // same as the first one
 let someOptionalString4 = String?.none //nil
 
-/*
- To access the value of an optional that has a value, use the postfix
- operator !, which force-unwraps it. Force-unwrapping is like saying, "I
- know that this optional definitely has a value, please give it to me."
-
- Trying to use ! to access a non-existent optional value triggers a
- runtime error. Always make sure that an optional contains a non-nil
- value before using ! to force-unwrap its value.
- */
-
-if someOptionalString != nil {
-    if someOptionalString!.hasPrefix("opt") {
-        print("has the prefix")
-    }
-}
+// MARK: Optional Unwrapping
 
 // The nil-coalescing operator ?? unwraps an optional if it contains a non-nil value, or returns a default value.
 someOptionalString = nil
@@ -192,10 +180,11 @@ print(someString) // abc
 
 let empty = someOptionalString?.isEmpty // Bool?
 
-// if-let structure -
-// if-let is a special structure in Swift that allows you to check
-//   if an Optional rhs holds a value, and if it does unwrap
-//   and assign it to the lhs.
+// MARK: If let/var statements
+/*
+if-let is a special structure in Swift that allows you to check if an
+Optional holds a value, and if it does unwrap and assign it to a constant.
+*/
 if let someNonOptionalStringConstant = someOptionalString {
     // has `Some` value, non-nil
     // someOptionalStringConstant is of type String, not type String?
@@ -204,25 +193,61 @@ if let someNonOptionalStringConstant = someOptionalString {
     }
 }
 
-// if-var is allowed too!
+// if-var is allowed too
 if var someNonOptionalString = someOptionalString {
     someNonOptionalString = "Non optional AND mutable"
     print(someNonOptionalString)
 }
 
-// You can bind multiple optional values in one if-let statement.
-//   If any of the bound values are nil, the if statement does not execute.
+/*
+You can bind multiple optional values in one if-let statement.
+If any of the bound values are nil, the if statement does not execute.
+*/
 if let first = someOptionalString, let second = someOptionalString2,
     let third = someOptionalString3, let fourth = someOptionalString4 {
     print("\(first), \(second), \(third), and \(fourth) are all not nil")
 }
 
-//if-let supports "," (comma) clauses, which can be used to
-//   enforce conditions on newly-bound optional values.
-// Both the assignment and the "," clause must pass.
+/*
+if-let supports "," (comma) clauses, which can be used to
+  enforce conditions on newly-bound optional values.
+Both the assignment and the "," clause must pass.
+*/
 let someNumber: Int? = 7
 if let num = someNumber, num > 3 {
     print("num is not nil and is greater than 3")
+}
+
+// MARK: Guard statements
+/* 
+'guard' provides early exits or breaks, placing the error handler code near the conditions.
+
+Makes it easier to avoid the "pyramid of doom" (massive indenting due to nested `if let/var`)
+*/
+func testGuard() {
+    
+    guard let aNumber = Optional<Int>(7) else {
+        return // guard statements MUST exit the scope that they are in.
+        // They generally use `return` or `throw`.
+    }
+
+    print("number is \(aNumber)")
+}
+
+/*
+ The postfix operator !, force-unwraps an Optional.
+ Force-unwrapping is like saying, "I know that this optional definitely
+ has a value, please give it to me."
+
+ Trying to use ! to access a non-existent optional value triggers a
+ runtime error. Always make sure that an optional contains a non-nil
+ value before using ! to force-unwrap its value.
+ */
+
+if someOptionalString != nil {
+    if someOptionalString!.hasPrefix("opt") {
+        print("has the prefix")
+    }
 }
 
 // Implicitly-unwrapped optional — An optional value that doesn't need to be unwrapped
@@ -245,6 +270,7 @@ let implicitString = unwrappedString // doesn't require an exclamation mark
 // Pre-Swift 5, T! was shorthand for ImplicitlyUnwrappedOptional<T>
 // Swift 5 and later, using ImplicitlyUnwrappedOptional throws a compile-time error.
 //var unwrappedString2: ImplicitlyUnwrappedOptional<String> = "Value is expected." //error
+
 
 // MARK: - Control Flow
 
@@ -284,7 +310,7 @@ default: // required (in order to cover all possible input)
 print(vegetableComment)
 
 
-//Iteration
+// MARK: Iteration
 //  You use `for-in` loops to iterate over a sequence, such as an Array, Dictionary, Range, etc.
 for element in shoppingList {
     print(element) // shoppingList is of type `[String]`, so element is of type `String`
@@ -295,16 +321,20 @@ for index in 0..<someArray.count {
     print(i)
 }
 
+for _ in 0..<someArray.count {
+    print("This is faster")
+}
+
 for (index, value) in someArray.enumerated {
     print("The value at \(index) is \(value)")
 }
 
-//Iterating through a dictionary does not guarantee any specific order
+// Iterating through a dictionary does not guarantee any specific order
 for (person, job) in immutableOccupations {
     print("\(person)'s job is \(job)")
 }
 
-// while loops are just like most languages: they iterate as long as a certain
+// `while` loops are just like most languages: they iterate as long as a certain
 // condition is met
 var i = 0
 while i < 5 {
@@ -464,27 +494,13 @@ let (_, price3, _) = pricesTuple2
 print(pricesTuple2.highestPrice == pricesTuple2.1) // true
 print("Highest gas price: \(pricesTuple2.highestPrice)")
 
-// guard statements
-func testGuard() {
-    // guards provide early exits or breaks, placing the error handler code near the conditions.
-    // it places variables it declares in the same scope as the guard statement.
-    // They make it easier to avoid the "pyramid of doom"
-    guard let aNumber = Optional<Int>(7) else {
-        return // guard statements MUST exit the scope that they are in.
-        // They generally use `return` or `throw`.
-    }
-
-    print("number is \(aNumber)")
-}
-testGuard()
-
 // Note that the print function is declared like so:
 //     func print(_ input: Any..., separator: String = " ", terminator: String = "\n")
 // To print without a newline:
 print("No newline", terminator: "")
 print("!")
 
-// MARK: - Closures
+// MARK: Closures
 
 var numbers = [1, 2, 6]
 
@@ -618,30 +634,45 @@ if chair(let name, let height) where height >= 5 {
     print(name)
 }
 
-// MARK: - Structures & Classes
+// MARK: - Structs & Classes
 
 /*
- Structures and classes in Swift have many things in common. Both can:
- - Define properties to store values
- - Define methods to provide functionality
- - Define subscripts to provide access to their values using subscript syntax
- - Define initializers to set up their initial state
- - Be extended to expand their functionality beyond a default implementation
- - Conform to protocols to provide standard functionality of a certain kind
+ Structures/Structs and Classes in Swift have many things in common:
+ - Define properties to store values.
+ - Define methods to provide functionality.
+ - Define subscripts to provide access to their values using subscript syntax.
+ - Define initializers to set up their initial state.
+ - Be extended to expand their functionality beyond a default implementation.
+ - Conform to protocols.
 
- Classes have additional capabilities that structures don't have:
- - Inheritance enables one class to inherit the characteristics of another.
+ Classes have additional capabilities that structs don't have:
+ - (Single) Inheritance enables one class to inherit the characteristics of another.
  - Type casting enables you to check and interpret the type of a class instance at runtime.
  - Deinitializers enable an instance of a class to free up any resources it has assigned.
  - Reference counting allows more than one reference to a class instance.
 
- Unless you need to use a class for one of these reasons, use a struct.
+ Main differences:
+ - Structs are copied by value, while classes are passed by reference.
+ (structs are copied on write to preserve memory, classes are automatically
+ reference counted, ARC).
+- struct's default init initialises all variables, whereas class' doesn't.
+- struct is not mutable unless explicitly stated, class is always mutable.
 
- Structures are copied by value, while classes are copied by reference.
+ Takeaway: Structs are the go-to unless you really need to use a class.
  */
 
+// MARK: Value vs. Reference
+var aStruct = SomeStruct(1)
+var anotherStruct = aStruct
+anotherStruct.changeSomeVariable(2)
+print(aStruct.someVariable, anotherStruct.someVariable) //1,2 since the original object was copied
 
-// MARK: Structures
+var aClass = SomeClass(1)
+var anotherClass = aClass
+anotherClass.changeSomeVariable(2)
+print(aClass.someVariable, anotherClass.someVariable) //2,2 since the original object was modified
+
+// MARK: Structs
 
 struct NamesTable {
     let names: [String]
@@ -652,15 +683,15 @@ struct NamesTable {
     }
 }
 
-// Structures have an auto-generated (implicit) designated "memberwise" initializer
+// Structs have an auto-generated (implicit) designated "memberwise" initializer
 let namesTable = NamesTable(names: ["Me", "Them"])
 let name = namesTable[1]
 print("Name is \(name)") // Name is Them
 
-//if a method changes its `struct`'s variable, it is preceded by
-//`mutating`
+
 struct Stack<Element> {
     var items = [Element]()
+    // if a method changes its `struct`'s variable, it is preceded by mutating`
     mutating func push(_ item: Element) {
         items.append(item)
     }
@@ -748,13 +779,13 @@ print(mySquare.getArea()) // 25
 mySquare.shrink()
 print(mySquare.sideLength) // 4
 
-// Cast instance
-let aShape = mySquare as Shape //Upcasting
+// Type casting
+let aShape = mySquare as Shape // Upcasting
 
-// Downcast instance:
-// Because downcasting can fail, the result can be an optional (as?) or an implicitly unwrpped optional (as!).
-let anOptionalSquare = aShape as? Square // This will return `nil` if aShape is not a Square
-let aSquare = aShape as! Square // This will throw a runtime error if aShape is not a Square
+// Downcasting
+// Because downcasting can fail, the result can be an optional (as?) or an implicitly unwrapped optional (as!).
+let anOptionalSquare = aShape as? Square // Will return `nil` if aShape is not a Square
+let aSquare = aShape as! Square // Will throw a runtime error if aShape is not a Square
 
 // compare instances, not the same as == which compares objects (equal to)
 if mySquare === mySquare {
@@ -795,6 +826,7 @@ if let circle = myEmptyCircle {
 // Classes and Structs can have static properties and methods, meaning they don't need to
 // be instantiated to be run or accessed. They are also shared by all members of that
 // struct or class
+
 class Person {
     static var justANumber = 10
 
@@ -815,9 +847,9 @@ class Student: Person {
         super.init()
     }
     // THIS ISN'T ALLOWED
-    // override static var count: Int {
-    //    return 150
-    // }
+    override static var count: Int {
+       return 150
+    }
 
     // THIS IS ALLOWED
     override class var averageAge: Double {
@@ -833,6 +865,7 @@ Student.aNumber // Error
 Person.justANumber = 20
 Student.justANumber // 20
 
+
 // MARK: - Protocols
 
 // protocols are also known as interfaces in some other languages
@@ -842,7 +875,8 @@ Student.justANumber // 20
 // operators, and subscripts.
 
 protocol ShapeGenerator {
-    var enabled: Bool { get set }
+    var enabled: Bool { get set }   //Anything conforming to this protocol must
+                                    //contain this var with a get and set
     func buildShape() -> Shape
 }
 
@@ -872,6 +906,8 @@ extension Int {
         return num * self
     }
 
+    // mutating is used to express that the caller itself
+    // will be changing, instead of returning a new instance
     mutating func multiplyBy(num: Int) {
         self *= num
     }
@@ -879,6 +915,25 @@ extension Int {
 
 print(7.doubled) // 14
 print(7.doubled.multipliedBy(num: 3)) // 42
+
+
+// MARK: Protocol Extensions
+
+// Add functionality to all types that conform to said protocol
+
+extension BinaryInteger {
+    func clamp(lowBound: Self, highBound: Self){
+        if self > highBound {
+            return highBound
+        }
+        return self < lowBound ? lowBound : self
+    }
+}
+
+// self => current value, Self => current data type
+// This extension will now add that functionality to any
+// Int type, since they all conform to BinaryInteger
+
 
 // MARK: - Error Handling
 
@@ -929,7 +984,7 @@ func testTryStuffDefer() {
 }
 testTryStuffDefer()
 
-// MARK: Generics
+// MARK: - Generics
 
 // Generics: Similar to Java and C#. Use the `where` keyword to specify the
 //   requirements of the generics.
@@ -963,6 +1018,86 @@ extension Array where Array.Element == Int {
         return total
     }
 }
+
+//MARK:- Result
+//Source: https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
+enum NetworkError: Error {
+    case badURL
+}
+
+func fetchUnreadCount(from urlString: String, completionHandler: @escaping (Result<Int, NetworkError>) -> Void) {
+    guard let url = URL(string: urlString) else {
+        completionHandler(.failure(.badURL))
+        return
+    }
+
+    // complicated networking code here
+    print("Fetching \(url.absoluteString)...")
+    completionHandler(.success(5))
+}
+
+fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
+    switch result {
+    case .success(let count):
+        print("\(count) unread messages.")
+    case .failure(let error):
+        print(error.localizedDescription)
+    }
+}
+
+//Result has a get() method that either returns the successful value if it exists, or throws its error otherwise.
+//This allows you to convert Result into a regular throwing call, like this:
+fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
+    if let count = try? result.get() {
+        print("\(count) unread messages.")
+    }
+}
+
+//Result has four other methods that may prove useful: map(), flatMap(), mapError(), and flatMapError().
+//Each of these give you the ability to transform either the success or error somehow, and the first two work similarly to the methods of the same name on Optional.
+
+//The map() method looks inside the Result, and transforms the success value into a different kind of value using a closure you specify.
+//However, if it finds failure instead, it just uses that directly and ignores your transformation.
+
+enum FactorError: Error {
+    case belowMinimum
+    case isPrime
+}
+
+func generateRandomNumber(maximum: Int) -> Result<Int, FactorError> {
+    if maximum < 0 {
+        // creating a range below 0 will crash, so refuse
+        return .failure(.belowMinimum)
+    } else {
+        let number = Int.random(in: 0...maximum)
+        return .success(number)
+    }
+}
+/*
+ When that’s called, the `Result` we get back will either be an integer or an error, so we could use `map()` to transform it:
+*/
+ let result1 = generateRandomNumber(maximum: 11)
+ let stringNumber = result1.map { "The random number is: \($0)." }
+
+/*
+As we’ve passed in a valid maximum number, result will be a success with a random number. So, using map() will take that random number, use it with our string interpolation, then return another Result type, this time of the type Result<String, FactorError>.
+
+However, if we had used generateRandomNumber(maximum: -11) then result would be set to the failure case with FactorError.belowMinimum. So, using map() would still return a Result<String, FactorError>, but it would have the same failure case and same FactorError.belowMinimum error.
+*/
+
+//If your transform closure returns a Result, flatMap() will return the new Result directly rather than wrapping it in another Result:
+func calculateFactors(for number: Int) -> Result<Int, FactorError> {
+    let factors = (1...number).filter { number % $0 == 0 }
+
+    if factors.count == 2 {
+        return .failure(.isPrime)
+    } else {
+        return .success(factors.count)
+    }
+}
+let result2 = generateRandomNumber(maximum: 10)
+let flatMapResult = result2.flatMap { calculateFactors(for: $0) }
+
 
 // MARK: - Other
 
@@ -1023,7 +1158,6 @@ for _ in 0..<10 {
 }
 
 // MARK: Access Control
-
 /*
  Swift has five levels of access control:
  - Open: Accessible *and subclassible* in any module that imports it.
@@ -1126,93 +1260,9 @@ foo <-> bar
 print("foo is \(foo), bar is \(bar)") // "foo is 20.0, bar is 10.0"
 
 
-// MARK: Value vs. Reference
-var aStruct = SomeStruct(1)
-var anotherStruct = aStruct
-anotherStruct.changeSomeVariable(2)
-print(aStruct.someVariable, anotherStruct.someVariable) //1,2 since the original object was copied
-
-var aClass = SomeClass(1)
-var anotherClass = aClass
-anotherClass.changeSomeVariable(2)
-print(aClass.someVariable, anotherClass.someVariable) //2,2 since the original object was modified
-
-
-//MARK:- Result
-//Source: https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
-enum NetworkError: Error {
-    case badURL
-}
-
-func fetchUnreadCount(from urlString: String, completionHandler: @escaping (Result<Int, NetworkError>) -> Void) {
-    guard let url = URL(string: urlString) else {
-        completionHandler(.failure(.badURL))
-        return
-    }
-
-    // complicated networking code here
-    print("Fetching \(url.absoluteString)...")
-    completionHandler(.success(5))
-}
-
-fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
-    switch result {
-    case .success(let count):
-        print("\(count) unread messages.")
-    case .failure(let error):
-        print(error.localizedDescription)
-    }
-}
-
-//Result has a get() method that either returns the successful value if it exists, or throws its error otherwise.
-//This allows you to convert Result into a regular throwing call, like this:
-fetchUnreadCount(from: "https://www.hackingwithswift.com") { result in
-    if let count = try? result.get() {
-        print("\(count) unread messages.")
-    }
-}
-
-//Result has four other methods that may prove useful: map(), flatMap(), mapError(), and flatMapError().
-//Each of these give you the ability to transform either the success or error somehow, and the first two work similarly to the methods of the same name on Optional.
-
-//The map() method looks inside the Result, and transforms the success value into a different kind of value using a closure you specify.
-//However, if it finds failure instead, it just uses that directly and ignores your transformation.
-
-enum FactorError: Error {
-    case belowMinimum
-    case isPrime
-}
-
-func generateRandomNumber(maximum: Int) -> Result<Int, FactorError> {
-    if maximum < 0 {
-        // creating a range below 0 will crash, so refuse
-        return .failure(.belowMinimum)
-    } else {
-        let number = Int.random(in: 0...maximum)
-        return .success(number)
-    }
-}
-/*
- When that’s called, the `Result` we get back will either be an integer or an error, so we could use `map()` to transform it:
+// MARK: - Bundle
+/* A Bundle is a directory containing the compiled coda and all the assets
+for an application, with the extension .app
 */
- let result1 = generateRandomNumber(maximum: 11)
- let stringNumber = result1.map { "The random number is: \($0)." }
-
-/*
-As we’ve passed in a valid maximum number, result will be a success with a random number. So, using map() will take that random number, use it with our string interpolation, then return another Result type, this time of the type Result<String, FactorError>.
-
-However, if we had used generateRandomNumber(maximum: -11) then result would be set to the failure case with FactorError.belowMinimum. So, using map() would still return a Result<String, FactorError>, but it would have the same failure case and same FactorError.belowMinimum error.
-*/
-
-//If your transform closure returns a Result, flatMap() will return the new Result directly rather than wrapping it in another Result:
-func calculateFactors(for number: Int) -> Result<Int, FactorError> {
-    let factors = (1...number).filter { number % $0 == 0 }
-
-    if factors.count == 2 {
-        return .failure(.isPrime)
-    } else {
-        return .success(factors.count)
-    }
-}
-let result2 = generateRandomNumber(maximum: 10)
-let flatMapResult = result2.flatMap { calculateFactors(for: $0) }
+Bundle.main.resourcePath //directs to the path of your app's bundle
+// it can be safely used with !, since it will always have a value

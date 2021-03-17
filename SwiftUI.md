@@ -43,11 +43,15 @@ You should **only have 1 source of truth** for each piece of information (either
 
 ![@Binding](https://i.imgur.com/0LPvONN.png)
 
-Generally speaking, you want to avoid the use of `@State` and favour other alternatives when possible
+`@State` means *"this is a property that's gonna change as the program runs"*, and SwiftUI takes care of memory management **and** watching the value.
+
+With the `$` prefix, SwiftUI creates a two-way binding, meaning any updates through external actions (user interaction, Publishers) will be reflected back to the original property.
+
+Generally speaking, you want to avoid the use of `@State` and favour other alternatives when possible.
 
 ## Information from a Model
 
-`@ObjectBinding` is akin to `@State` except it works between a Model and a View that listens to said Model's property's changes, where `@State` is between Views themselves.
+`@ObjectBinding` is akin to `@State` except it works between a Model and a View that listens to said Model's property's changes, where `@State` is between Views themselves, and won't work with classes. This means that classes you use must conform to the `BindableObject` protocol, and implement `didChange()`.
 
 ![@ObjectBinding](https://i.imgur.com/K80oZAb.png)
 An alternative for hierarchies is `@EnvironmentObject` which avoids having to pass the `BindableObject` property from View to View, and instead grab it straight from `Environment`, always with 1 source of truth and thus no concurrency problems.
