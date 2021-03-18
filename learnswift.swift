@@ -712,7 +712,7 @@ class Shape {
 class Rect: Shape {
     var sideLength: Int = 1
 
-    //Computed Property
+    // MARK: Computed Properties
     //  A property with a custom getter and/or setter
     var perimeter: Int {
         get {
@@ -724,23 +724,28 @@ class Rect: Shape {
         }
     }
 
-    // Computed properties must be declared as `var`, you know, cause' they can change
+    // Computed properties must be declared as `var`, because they can change
     var smallestSideLength: Int {
-        return self.sideLength - 1
+        self.sideLength - 1 // `return` can be ommitted on single-line statements
     }
 
-    // Lazily load a property
+    // MARK: Lazy properties
+    /* Not computed until called upon. Useful for long/costly computations
+    or properties which rely on data not available from the get-go*/
     // subShape remains nil (uninitialized) until getter called
     lazy var subShape = Rect(sideLength: 4)
 
-    //Property Observers
+    // MARK: Property Observers
     // If you don't need a custom getter and setter,
     // but still want to run code before and after getting or setting
     // a property, you can use `willSet` and `didSet`
     var identifier: String = "defaultID" {
         // the `willSet` arg will be the variable name for the new value
         willSet(someIdentifier) {
-            print(someIdentifier)
+            print("This is about to become \(someIdentifier)")
+        }
+        didSet(someIdentifier){
+            print("It's done")
         }
     }
     //Initialiser/Constructor
@@ -1019,6 +1024,17 @@ extension Array where Array.Element == Int {
     }
 }
 
+//MARK:- Memory Safety
+/*
+There are 3 main types of object references:
+ - `strong`: The default, increases the Reference Counter by 1.
+ - `weak`: Doesn't increase the counter and thus whatever variable uses
+            said reference will be an Optional and may be nil if the
+            object being referenced is wiped by the garbage collector.
+ - `unowned`: Same as weak, but forcefully unwrapped, so the app will
+            crash if the object becomes nil.
+*/
+
 //MARK:- Result
 //Source: https://www.hackingwithswift.com/articles/161/how-to-use-result-in-swift
 enum NetworkError: Error {
@@ -1157,9 +1173,9 @@ for _ in 0..<10 {
     // Code to execute 10 times
 }
 
-// MARK: Access Control
+// MARK: Access Control / Privacy Modifiers
 /*
- Swift has five levels of access control:
+ Swift has five levels of access control or privacy, in order of increasing restriction:
  - Open: Accessible *and subclassible* in any module that imports it.
  - Public: Accessible in any module that imports it, subclassible in the module it is declared in.
  - Internal: Accessible and subclassible in the module it is declared in.
