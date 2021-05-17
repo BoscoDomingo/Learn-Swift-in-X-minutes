@@ -59,6 +59,8 @@ An alternative for hierarchies is `@EnvironmentObject` which avoids having to pa
 ![Screenshot 2021-03-16 at 15 00 21](https://user-images.githubusercontent.com/46006784/111322877-ab62d080-8669-11eb-9219-a3da230e8668.png)
 <img width="900" src="https://user-images.githubusercontent.com/46006784/111327975-2332fa00-866e-11eb-9e20-8e92346c82d5.png">
 
+Wonderful article explaining all the different property wrappers in detail, when to use which and including code examples: [Jared Sinclair Blog](https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html)
+
 ## Hosting SwiftUI inside UIKit
 
 - `UIHostingController` - For iOS apps
