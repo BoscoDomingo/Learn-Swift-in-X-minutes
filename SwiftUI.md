@@ -37,6 +37,7 @@ var body: some View{
 ## States and bindings
 
 You should **only have 1 source of truth** for each piece of information (either 1 `@State` or `BindableObject` per property), meaning all other Views that want to use that source of truth should make use of `@Binding`s (Bindings are read-write). `@State` is not a great fit for external data (such as things coming from backend), since it is "stuck" inside SwiftUI. Use the `BindableObject` protocol for these types of data:
+
 <img width="700" alt="Single Source of Truth" src="https://user-images.githubusercontent.com/46006784/111323064-d5b48e00-8669-11eb-89cf-5ed564fc46ab.png">
 
 ![@State and BindableObject](https://user-images.githubusercontent.com/46006784/111322732-840c0380-8669-11eb-8f0d-281f5f746af3.png)
@@ -59,7 +60,9 @@ An alternative for hierarchies is `@EnvironmentObject` which avoids having to pa
 ![Screenshot 2021-03-16 at 15 00 21](https://user-images.githubusercontent.com/46006784/111322877-ab62d080-8669-11eb-9219-a3da230e8668.png)
 <img width="900" src="https://user-images.githubusercontent.com/46006784/111327975-2332fa00-866e-11eb-9e20-8e92346c82d5.png">
 
-Wonderful article explaining all the different property wrappers in detail, when to use which and including code examples: [Jared Sinclair Blog](https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html)
+## Go-to article
+
+Wonderful article explaining all the aforementioned property wrappers **in detail**, including when to use which and code examples: [Jared Sinclair Blog](https://jaredsinclair.com/2020/05/07/swiftui-cheat-sheet.html)
 
 ## Hosting SwiftUI inside UIKit
 
